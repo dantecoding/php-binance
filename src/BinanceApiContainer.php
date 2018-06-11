@@ -63,6 +63,16 @@ class BinanceApiContainer
     }
 
     /**
+     * Returns list of products currently listed on Binance.
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getProducts()
+    {
+        return $this->_makeApiRequest('GET', 'exchange/public/product', 'WEB');
+    }
+
+    /**
      * Test connectivity to the Rest API.
      *
      * @return \Psr\Http\Message\ResponseInterface
@@ -180,16 +190,6 @@ class BinanceApiContainer
     public function getBookTickers()
     {
         return $this->_makeApiRequest('GET', 'ticker/allBookTickers');
-    }
-
-    /**
-     * Returns the current prices for all symbols
-     * @param $params
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function getPrice($params)
-    {
-        return $this->_makeApiRequest('GET', 'ticker/price', 'NONE', $params);
     }
 
     /**
@@ -371,7 +371,7 @@ class BinanceApiContainer
      */
     public function withdraw($params)
     {
-        return $this->_makeApiRequest('POSTV2', 'wapi/v1/withdraw.html', 'WAPI_SIGNED', $params);
+        return $this->_makeApiRequest('POST', 'wapi/v1/withdraw.html', 'WAPI_SIGNED', $params);
     }
 
     /**
@@ -391,7 +391,7 @@ class BinanceApiContainer
      */
     public function getDepositHistory($params)
     {
-        return $this->_makeApiRequest('POSTV2', 'wapi/v1/getDepositHistory.html', 'WAPI_SIGNED', $params);
+        return $this->_makeApiRequest('GET', 'wapi/v3/depositHistory.html', 'WAPI_SIGNED', $params);
     }
 
     /**
@@ -411,7 +411,25 @@ class BinanceApiContainer
      */
     public function getWithdrawHistory($params)
     {
-        return $this->_makeApiRequest('POSTV2', 'wapi/v1/getWithdrawHistory.html', 'WAPI_SIGNED', $params);
+        return $this->_makeApiRequest('GET', 'wapi/v3/withdrawHistory.html', 'WAPI_SIGNED', $params);
+    }
+
+    /**
+     * Fetch dustlog history.
+     *
+     * Fetch small amounts of assets exchanged BNB records.
+     *
+     * @param array $params The data to send.
+     *      @option int    "recvWindow" The number of milliseconds after timestamp the request is valid for.
+     *      @option int    "timestamp"  A UNIX timestamp. (required)
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     *
+     * @link https://www.binance.com/restapipub.html#account-trade-list-signed
+     */
+    public function getDustLog($params)
+    {
+        return $this->_makeApiRequest('GET', 'wapi/v3/userAssetDribbletLog.html', 'WAPI_SIGNED', $params);
     }
 
     /**
@@ -520,7 +538,7 @@ class BinanceApiContainer
      * @return \Psr\Http\Message\ResponseInterface
      * @throws BinanceApiException
      */
-    protected function _makeApiRequest($type, $endPoint, $securityType = 'NONE', $params = [])
+    private function _makeApiRequest($type, $endPoint, $securityType = 'NONE', $params = [])
     {
         $params = array_filter($params, 'strlen');
 
@@ -544,6 +562,10 @@ class BinanceApiContainer
                 $url = ConnectionDetails::API_URL . $endPoint;
                 $params['signature'] = hash_hmac('sha256', http_build_query($params), $this->_apiSecret);
                 break;
+            case 'WEB':
+                $client = new Client(['http_errors' => false]);
+                $url = ConnectionDetails::API_URL . $endPoint;
+                break;
         }
 
         switch (strtoupper($type)) {
@@ -555,10 +577,6 @@ class BinanceApiContainer
             case 'PUT':
             case 'DELETE':
                 $params['form_params'] = $params;
-                break;
-            case 'POSTV2':
-                $type = 'POST';
-                $params['query'] = $params;
                 break;
         }
 
@@ -581,7 +599,7 @@ class BinanceApiContainer
      * @return void
      * @throws LarislackersException
      */
-    protected function _makeWebsocketRequest($type, $params, $once = false)
+    private function _makeWebsocketRequest($type, $params, $once = false)
     {
         switch (strtoupper($type)) {
             default:
