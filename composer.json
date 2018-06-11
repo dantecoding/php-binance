@@ -1,18 +1,14 @@
 {
-    "name": "larislackers/php-binance",
+    "name": "dantecoding/php-binance",
     "version": "1.0.2",
     "description": "A PHP wrapper for the Binance API endpoints.",
     "keywords": ["binance", "cryptocurrency", "php", "api", "wrapper-api", "php-library", "cryptocurrency-exchanges"],
-    "homepage": "https://github.com/larislackers/php-binance",
+    "homepage": "https://github.com/dantecoding/php-binance",
     "license": "MIT",
     "authors": [
         {
-            "name": "Panagiotis Papadatis",
-            "email": "ppapadatis@protonmail.com"
-        },
-        {
-            "name": "Dimitrios Giouroukis",
-            "email": "digitalbckp@gmail.com"
+            "name": "Alex Ryabykin",
+            "email": "dante666.18@gmail.com"
         }
     ],
     "require": {
