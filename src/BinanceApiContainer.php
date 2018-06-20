@@ -547,7 +547,7 @@ class BinanceApiContainer
             case 'NONE':
                 $builder = ['http_errors' => false];
                 if (config('binance.proxy')) {
-                    $builder['proxy'] = config('binance.proxy_list');
+                    $builder['proxy'] = proxies_for_guzzle();
                 }
                 $client = new Client($builder);
                 $url = ConnectionDetails::API_URL . ConnectionDetails::API_VERSION . $endPoint;
@@ -555,7 +555,7 @@ class BinanceApiContainer
             case 'API-KEY':
                 $builder = ['headers' => ['X-MBX-APIKEY' => $this->_apiKey], 'http_errors' => false];
                 if (config('binance.proxy')) {
-                    $builder['proxy'] = config('binance.proxy_list');
+                    $builder['proxy'] = proxies_for_guzzle();
                 }
                 $client = new Client($builder);
                 $url = ConnectionDetails::API_URL . ConnectionDetails::API_VERSION . $endPoint;
@@ -563,7 +563,7 @@ class BinanceApiContainer
             case 'SIGNED':
                 $builder = ['headers' => ['X-MBX-APIKEY' => $this->_apiKey], 'http_errors' => false];
                 if (config('binance.proxy')) {
-                    $builder['proxy'] = config('binance.proxy_list');
+                    $builder['proxy'] = proxies_for_guzzle();
                 }
                 $client = new Client($builder);
                 $url = ConnectionDetails::API_URL . ConnectionDetails::API_VERSION_SIGNED . $endPoint;
@@ -572,7 +572,7 @@ class BinanceApiContainer
             case 'WAPI_SIGNED':
                 $builder = ['headers' => ['X-MBX-APIKEY' => $this->_apiKey], 'http_errors' => false];
                 if (config('binance.proxy')) {
-                    $builder['proxy'] = config('binance.proxy_list');
+                    $builder['proxy'] = proxies_for_guzzle();
                 }
                 $client = new Client($builder);
                 $url = ConnectionDetails::API_URL . $endPoint;
@@ -581,7 +581,7 @@ class BinanceApiContainer
             case 'WEB':
                 $builder = ['http_errors' => false];
                 if (config('binance.proxy')) {
-                    $builder['proxy'] = config('binance.proxy_list');
+                    $builder['proxy'] = proxies_for_guzzle();
                 }
                 $client = new Client($builder);
                 $url = ConnectionDetails::API_URL . $endPoint;
