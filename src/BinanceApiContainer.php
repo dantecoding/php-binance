@@ -545,25 +545,45 @@ class BinanceApiContainer
         switch (strtoupper($securityType)) {
             default:
             case 'NONE':
-                $client = new Client(['http_errors' => false]);
+                $builder = ['http_errors' => false];
+                if (config('binance.proxy')) {
+                    $builder['proxy'] = config('biannce.proxy_list');
+                }
+                $client = new Client($builder);
                 $url = ConnectionDetails::API_URL . ConnectionDetails::API_VERSION . $endPoint;
                 break;
             case 'API-KEY':
-                $client = new Client(['headers' => ['X-MBX-APIKEY' => $this->_apiKey], 'http_errors' => false]);
+                $builder = ['headers' => ['X-MBX-APIKEY' => $this->_apiKey], 'http_errors' => false];
+                if (config('binance.proxy')) {
+                    $builder['proxy'] = config('biannce.proxy_list');
+                }
+                $client = new Client($builder);
                 $url = ConnectionDetails::API_URL . ConnectionDetails::API_VERSION . $endPoint;
                 break;
             case 'SIGNED':
-                $client = new Client(['headers' => ['X-MBX-APIKEY' => $this->_apiKey], 'http_errors' => false]);
+                $builder = ['headers' => ['X-MBX-APIKEY' => $this->_apiKey], 'http_errors' => false];
+                if (config('binance.proxy')) {
+                    $builder['proxy'] = config('biannce.proxy_list');
+                }
+                $client = new Client($builder);
                 $url = ConnectionDetails::API_URL . ConnectionDetails::API_VERSION_SIGNED . $endPoint;
                 $params['signature'] = hash_hmac('sha256', http_build_query($params), $this->_apiSecret);
                 break;
             case 'WAPI_SIGNED':
-                $client = new Client(['headers' => ['X-MBX-APIKEY' => $this->_apiKey], 'http_errors' => false]);
+                $builder = ['headers' => ['X-MBX-APIKEY' => $this->_apiKey], 'http_errors' => false];
+                if (config('binance.proxy')) {
+                    $builder['proxy'] = config('biannce.proxy_list');
+                }
+                $client = new Client($builder);
                 $url = ConnectionDetails::API_URL . $endPoint;
                 $params['signature'] = hash_hmac('sha256', http_build_query($params), $this->_apiSecret);
                 break;
             case 'WEB':
-                $client = new Client(['http_errors' => false]);
+                $builder = ['http_errors' => false];
+                if (config('binance.proxy')) {
+                    $builder['proxy'] = config('biannce.proxy_list');
+                }
+                $client = new Client($builder);
                 $url = ConnectionDetails::API_URL . $endPoint;
                 break;
         }
