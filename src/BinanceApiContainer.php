@@ -546,8 +546,8 @@ class BinanceApiContainer
             default:
             case 'NONE':
                 $builder = ['http_errors' => false];
-                if (config('binance.proxy')) {
-                    $proxy = proxies_for_guzzle();
+                $proxy = proxies_for_guzzle();
+                if (!empty($proxy)) {
                     $builder['proxy'] = $proxy[array_rand($proxy)];
                 }
                 $client = new Client($builder);
@@ -555,8 +555,8 @@ class BinanceApiContainer
                 break;
             case 'API-KEY':
                 $builder = ['headers' => ['X-MBX-APIKEY' => $this->_apiKey], 'http_errors' => false];
-                if (config('binance.proxy')) {
-                    $proxy = proxies_for_guzzle();
+                $proxy = proxies_for_guzzle();
+                if (!empty($proxy)) {
                     $builder['proxy'] = $proxy[array_rand($proxy)];
                 }
                 $client = new Client($builder);
@@ -564,8 +564,8 @@ class BinanceApiContainer
                 break;
             case 'SIGNED':
                 $builder = ['headers' => ['X-MBX-APIKEY' => $this->_apiKey], 'http_errors' => false];
-                if (config('binance.proxy')) {
-                    $proxy = proxies_for_guzzle();
+                $proxy = proxies_for_guzzle();
+                if (!empty($proxy)) {
                     $builder['proxy'] = $proxy[array_rand($proxy)];
                 }
                 $client = new Client($builder);
@@ -574,8 +574,8 @@ class BinanceApiContainer
                 break;
             case 'WAPI_SIGNED':
                 $builder = ['headers' => ['X-MBX-APIKEY' => $this->_apiKey], 'http_errors' => false];
-                if (config('binance.proxy')) {
-                    $proxy = proxies_for_guzzle();
+                $proxy = proxies_for_guzzle();
+                if (!empty($proxy)) {
                     $builder['proxy'] = $proxy[array_rand($proxy)];
                 }
                 $client = new Client($builder);
@@ -584,8 +584,8 @@ class BinanceApiContainer
                 break;
             case 'WEB':
                 $builder = ['http_errors' => false];
-                if (config('binance.proxy')) {
-                    $proxy = proxies_for_guzzle();
+                $proxy = proxies_for_guzzle();
+                if (!empty($proxy)) {
                     $builder['proxy'] = $proxy[array_rand($proxy)];
                 }
                 $client = new Client($builder);
